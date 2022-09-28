@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class LennardJones {
    double epsilon =  4 * 0.0004; // take note of factor of 4, atomic units
@@ -9,14 +11,26 @@ public class LennardJones {
    int totalTime;
    int boxLength = 5; // for testing will be 5, make dynamic later\
    double dt = 0.5;
-
    ArrayList<ArrayList<Double>> positions; // for testing will be a based of a boxLength of 10
    ArrayList<Double> masses;
+   //ArrayList<ArrayList<Double>> forces;
+   ArrayList<ArrayList<Double>> velocities;
 
 
    public LennardJones(int totalTime) {
       //this.numOfObjects = numOfObjects;
       //this.totalTime = totalTime;
+      for (int i = 0; i < numOfObjects; i++) {
+         masses.add(73000.0);
+      }
+   }
+
+   public ArrayList<ArrayList<Double>> getVelocities() {
+      return velocities;
+   }
+
+   public ArrayList<ArrayList<Double>> getPositions() {
+      return positions;
    }
 
    public double potential(double distance) {
@@ -48,6 +62,23 @@ public class LennardJones {
       return potentialEnergy;
    }
 
+   public void initialVelocities() {
+      Random random = new Random();
+      double probability;
+      for (int i = 0; i < numOfObjects; i++) {
+         ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.001 * random.nextDouble(), 0.001 * random.nextDouble()));
+         probability = random.nextDouble();
+         if (probability < 0.50) {
+            row.set(x, -1.0 * row.get(x));
+         }
+         probability = random.nextDouble();
+         if (probability < 0.50) {
+            row.set(y, -1.0 * row.get(y));
+         }
+         velocities.add(row);
+      }
+   }
+
    public void updatePositions(ArrayList<ArrayList<Double>> velocities, ArrayList<ArrayList<Double>> forces) {
       for (int i = 0; i < numOfObjects; i++) {
          positions.get(i).set(x, positions.get(i).get(x) + velocities.get(i).get(x) * dt + 0.5 *
@@ -56,4 +87,12 @@ public class LennardJones {
                  (forces.get(i).get(y) / masses.get(i)) * Math.pow(dt, 2) );
       }
    }
+
+   public void updateVelocities(ArrayList<ArrayList<Double>> velocities, ArrayList<ArrayList<Double>> forces, ArrayList<ArrayList<Double>> nextForces) {
+      for (int i = 0; i < numOfObjects; i++) {
+         velocities.get(i).set(x, velocities.get(i).get(x) + 0.5 * (forces.get(i).get(x) + nextForces.get(i).get(x)) / masses.get(i) * dt);
+         velocities.get(i).set(y, velocities.get(i).get(y) + 0.5 * (forces.get(i).get(y) + nextForces.get(i).get(y)) / masses.get(i) * dt);
+      }
+   }
+
 }
