@@ -11,19 +11,38 @@ public class LennardJones {
    int totalTime;
    double boxLength = 5.0; // for testing will be 5, make dynamic later\
    double dt = 0.5;
-   ArrayList<ArrayList<Double>> positions; // for testing will be a based of a boxLength of 10
+   ArrayList<ArrayList<Double>> positions; // for testing will be a based of a boxLength of 5, still make
    ArrayList<Double> masses;
-   //ArrayList<ArrayList<Double>> forces;
    ArrayList<ArrayList<Double>> velocities;
    double time = 0;
+   ArrayList<ArrayList<Double>> mainForces;
 
 
    public LennardJones(int totalTime) {
       //this.numOfObjects = numOfObjects;
-      //this.totalTime = totalTime;
+      this.totalTime = totalTime;
       for (int i = 0; i < numOfObjects; i++) {
          masses.add(73000.0);
       }
+      Random random = new Random();
+      for (int i = 0; i < numOfObjects; i++) {
+         ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.001 * random.nextDouble(), 0.001 * random.nextDouble()));
+         double probability = random.nextDouble();
+         if (probability < 0.50) {
+            row.set(x, -1.0 * row.get(x)); // could replace with ? maybe
+         }
+         probability = random.nextDouble();
+         if (probability < 0.50) {
+            row.set(y, -1.0 * row.get(y));
+         }
+         velocities.add(row);
+      }
+      // temp make dynamic later
+      ArrayList<Double> position1 = new ArrayList<>(Arrays.asList(2., 2.));
+      ArrayList<Double> position2 = new ArrayList<>(Arrays.asList(4., 4.));
+      positions.add(position1);
+      positions.add(position2);
+      mainForces = calcForces();
    }
 
    public ArrayList<ArrayList<Double>> getVelocities() {
@@ -66,7 +85,7 @@ public class LennardJones {
 
    public ArrayList<ArrayList<Double>> calcForces() {
       ArrayList<ArrayList<Double>> forces = new ArrayList<>();
-      ArrayList<Double> zeroes = new ArrayList<>(Arrays.asList(0., 0.)); //-----------------------------------
+      ArrayList<Double> zeroes = new ArrayList<>(Arrays.asList(0., 0.));
       for (int i = 0; i < numOfObjects; i++) {
          forces.add(zeroes);
       }
@@ -87,22 +106,6 @@ public class LennardJones {
       return forces;
    }
 
-   public void initialVelocities() {
-      Random random = new Random();
-      double probability;
-      for (int i = 0; i < numOfObjects; i++) {
-         ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.001 * random.nextDouble(), 0.001 * random.nextDouble()));
-         probability = random.nextDouble();
-         if (probability < 0.50) {
-            row.set(x, -1.0 * row.get(x)); // could replace with ? maybe
-         }
-         probability = random.nextDouble();
-         if (probability < 0.50) {
-            row.set(y, -1.0 * row.get(y));
-         }
-         velocities.add(row);
-      }
-   }
 
    public void updatePositions(ArrayList<ArrayList<Double>> velocities, ArrayList<ArrayList<Double>> forces) {
       for (int i = 0; i < numOfObjects; i++) {
@@ -113,7 +116,7 @@ public class LennardJones {
       }
    }
 
-   public void updateVelocities(ArrayList<ArrayList<Double>> velocities, ArrayList<ArrayList<Double>> forces, ArrayList<ArrayList<Double>> nextForces) {
+   public void updateVelocities(ArrayList<ArrayList<Double>> forces, ArrayList<ArrayList<Double>> nextForces) {
       for (int i = 0; i < numOfObjects; i++) {
          velocities.get(i).set(x, velocities.get(i).get(x) + 0.5 * (forces.get(i).get(x) + nextForces.get(i).get(x)) / masses.get(i) * dt);
          velocities.get(i).set(y, velocities.get(i).get(y) + 0.5 * (forces.get(i).get(y) + nextForces.get(i).get(y)) / masses.get(i) * dt);
@@ -122,7 +125,8 @@ public class LennardJones {
 
    public void step() {
       time += dt;
-      //updatePositions
+      updatePositions(velocities, mainForces);
+      // handling boundaries
       for (int i = 0; i < numOfObjects; i++) {
          if (positions.get(i).get(x) > boxLength) {
             positions.get(i).set(x, boxLength);
@@ -140,6 +144,9 @@ public class LennardJones {
             positions.get(i).set(y, 0.);
             velocities.get(i).set(y, -1 * velocities.get(i).get(y));
          }
+         ArrayList<ArrayList<Double>> updatedForces = calcForces();
+         updateVelocities(mainForces, updatedForces);
+         mainForces = DeepCopy.deepCopy2D(updatedForces);
 
       }
    }
