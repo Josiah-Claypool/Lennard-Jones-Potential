@@ -39,13 +39,13 @@ public class LennardJones {
    }
 
    public double force(double distance) {
-      return epsilon * 6 / distance * (Math.pow((2 * (sigma / distance)), 12) - Math.pow((sigma / distance), 6));
+      return epsilon * 6 / distance * ( 2 * Math.pow((sigma / distance), 12) - Math.pow((sigma / distance), 6));
    }
 
    public double calcKinetic(ArrayList<ArrayList<Double>> velocities) {
       double kineticEnergy = 0;
       for (int i = 0; i < masses.size(); i++) {
-         kineticEnergy += 0.5 * masses.get(i) * (( Math.pow(velocities.get(i).get(x), 2) + Math.pow(velocities.get(i).get(y), 2)));
+         kineticEnergy += 0.5 * masses.get(i) * ( Math.pow(velocities.get(i).get(x), 2) + Math.pow(velocities.get(i).get(y), 2));
       }
       return kineticEnergy;
    }
@@ -62,6 +62,29 @@ public class LennardJones {
          }
       }
       return potentialEnergy;
+   }
+
+   public ArrayList<ArrayList<Double>> calcForces() {
+      ArrayList<ArrayList<Double>> forces = new ArrayList<>();
+      ArrayList<Double> zeroes = new ArrayList<>(Arrays.asList(0., 0.)); //-----------------------------------
+      for (int i = 0; i < numOfObjects; i++) {
+         forces.add(zeroes);
+      }
+      for (int i = 0; i < numOfObjects; i++) {
+         for (int j = i + 1; j < numOfObjects; j++) {
+            double dx = positions.get(j).get(y) - positions.get(i).get(x);
+            double dy = positions.get(j).get(y) - positions.get(i).get(y);
+            double distance = Math.sqrt( Math.pow( (positions.get(i).get(x) - positions.get(j).get(x)), 2 )  +
+                    Math.pow( (positions.get(i).get(y) - positions.get(j).get(y)), 2 ));
+            double fx = force(distance) * dx / distance;
+            double fy = force(distance) * dy / distance;
+            forces.get(i).set(x, forces.get(i).get(x) - fx);
+            forces.get(j).set(x, forces.get(j).get(x) + fx);
+            forces.get(i).set(y, forces.get(i).get(y) - fy);
+            forces.get(j).set(y, forces.get(j).get(y) + fy);
+         }
+      }
+      return forces;
    }
 
    public void initialVelocities() {
