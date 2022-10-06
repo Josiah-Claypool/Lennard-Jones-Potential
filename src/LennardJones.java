@@ -11,9 +11,9 @@ public class LennardJones {
    int totalTime;
    double boxLength = 5.0; // for testing will be 5, make dynamic later\
    double dt = 0.5;
-   ArrayList<ArrayList<Double>> positions; // for testing will be a based of a boxLength of 5, still make
-   ArrayList<Double> masses;
-   ArrayList<ArrayList<Double>> velocities;
+   ArrayList<ArrayList<Double>> positions = new ArrayList<>() ; // for testing will be a based of a boxLength of 5, still make
+   ArrayList<Double> masses = new ArrayList<>();
+   ArrayList<ArrayList<Double>> velocities = new ArrayList<>();
    double time = 0;
    ArrayList<ArrayList<Double>> mainForces;
 
