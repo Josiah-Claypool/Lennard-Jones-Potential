@@ -14,7 +14,7 @@ public class LennardJones {
    ArrayList<ArrayList<Double>> positions = new ArrayList<>() ; // for testing will be a based of a boxLength of 5, still make
    ArrayList<Double> masses = new ArrayList<>();
    ArrayList<ArrayList<Double>> velocities = new ArrayList<>();
-   double time = 0;
+   double currentTime = 0;
    ArrayList<ArrayList<Double>> mainForces;
 
 
@@ -39,7 +39,7 @@ public class LennardJones {
       }
       // temp make dynamic later
       ArrayList<Double> position1 = new ArrayList<>(Arrays.asList(2., 2.));
-      ArrayList<Double> position2 = new ArrayList<>(Arrays.asList(4., 4.));
+      ArrayList<Double> position2 = new ArrayList<>(Arrays.asList(4., 2.));
       positions.add(position1);
       positions.add(position2);
       mainForces = calcForces();
@@ -52,6 +52,8 @@ public class LennardJones {
    public ArrayList<ArrayList<Double>> getPositions() {
       return positions;
    }
+
+   public double getCurrentTime() { return currentTime; }
 
    public double potential(double distance) {
       return epsilon * (Math.pow((sigma/distance), 12) - Math.pow((sigma/distance), 6));
@@ -85,13 +87,13 @@ public class LennardJones {
 
    public ArrayList<ArrayList<Double>> calcForces() {
       ArrayList<ArrayList<Double>> forces = new ArrayList<>();
-      ArrayList<Double> zeroes = new ArrayList<>(Arrays.asList(0., 0.));
       for (int i = 0; i < numOfObjects; i++) {
+         ArrayList<Double> zeroes = new ArrayList<>(Arrays.asList(0., 0.));
          forces.add(zeroes);
       }
       for (int i = 0; i < numOfObjects; i++) {
          for (int j = i + 1; j < numOfObjects; j++) {
-            double dx = positions.get(j).get(y) - positions.get(i).get(x);
+            double dx = positions.get(j).get(x) - positions.get(i).get(x);
             double dy = positions.get(j).get(y) - positions.get(i).get(y);
             double distance = Math.sqrt( Math.pow( (positions.get(i).get(x) - positions.get(j).get(x)), 2 )  +
                     Math.pow( (positions.get(i).get(y) - positions.get(j).get(y)), 2 ));
@@ -124,7 +126,7 @@ public class LennardJones {
    }
 
    public void step() {
-      time += dt;
+      currentTime += dt;
       updatePositions(velocities, mainForces);
       // handling boundaries
       for (int i = 0; i < numOfObjects; i++) {
