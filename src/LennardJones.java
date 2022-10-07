@@ -8,14 +8,17 @@ public class LennardJones {
    int x = 0; // to make index clearer
    int y = 1; // // to make index clearer
    int numOfObjects = 2; // for testing will be 2, make dynamic later
-   int totalTime;
-   double boxLength = 5.0; // for testing will be 5, make dynamic later\
+   double totalTime;
+   double boxLength = 100.0; // for testing will be 5, make dynamic later\
    double dt = 0.5;
    ArrayList<ArrayList<Double>> positions = new ArrayList<>() ; // for testing will be a based of a boxLength of 5, still make
    ArrayList<Double> masses = new ArrayList<>();
    ArrayList<ArrayList<Double>> velocities = new ArrayList<>();
    double currentTime = 0;
    ArrayList<ArrayList<Double>> mainForces;
+   double totalEnergy;
+   double totalKineticEnergy;
+   double totalPotentialEnergy;
 
 
    public LennardJones(int totalTime) {
@@ -38,11 +41,14 @@ public class LennardJones {
          velocities.add(row);
       }
       // temp make dynamic later
-      ArrayList<Double> position1 = new ArrayList<>(Arrays.asList(2., 2.));
-      ArrayList<Double> position2 = new ArrayList<>(Arrays.asList(4., 2.));
+      ArrayList<Double> position1 = new ArrayList<>(Arrays.asList(13., 2.));
+      ArrayList<Double> position2 = new ArrayList<>(Arrays.asList(20., 2.));
       positions.add(position1);
       positions.add(position2);
       mainForces = calcForces();
+      totalPotentialEnergy = calcPotential();
+      totalKineticEnergy = calcKinetic(velocities);
+      totalEnergy = totalKineticEnergy + totalPotentialEnergy;
    }
 
    public ArrayList<ArrayList<Double>> getVelocities() {
@@ -54,6 +60,11 @@ public class LennardJones {
    }
 
    public double getCurrentTime() { return currentTime; }
+
+   public double getTotalEnergy() { return totalEnergy; }
+
+   public double getTotalPotentialEnergy() { return totalPotentialEnergy; }
+   public double getTotalKineticEnergy() { return totalKineticEnergy; }
 
    public double potential(double distance) {
       return epsilon * (Math.pow((sigma/distance), 12) - Math.pow((sigma/distance), 6));
@@ -73,11 +84,10 @@ public class LennardJones {
 
    public double calcPotential() {
       double potentialEnergy = 0;
-      double r;
       for (int i = 0; i < numOfObjects; i++) {
          for (int j = i + 1; j < numOfObjects; j++) {
             // replace with distance method later
-            r =  Math.sqrt( Math.pow( (positions.get(i).get(x) - positions.get(j).get(x)), 2 )  +
+            double r =  Math.sqrt( Math.pow( (positions.get(i).get(x) - positions.get(j).get(x)), 2 )  +
                     Math.pow( (positions.get(i).get(y) - positions.get(j).get(y)), 2 ));
             potentialEnergy += potential(r);
          }
@@ -149,8 +159,9 @@ public class LennardJones {
          ArrayList<ArrayList<Double>> updatedForces = calcForces();
          updateVelocities(mainForces, updatedForces);
          mainForces = DeepCopy.deepCopy2D(updatedForces);
-
+         totalPotentialEnergy = calcPotential();
+         totalKineticEnergy = calcKinetic(velocities);
+         totalEnergy = totalKineticEnergy + totalPotentialEnergy;
       }
    }
-
 }
