@@ -29,7 +29,7 @@ public class LennardJones {
       }
       Random random = new Random();
       for (int i = 0; i < numOfObjects; i++) {
-         ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.001 * random.nextDouble(), 0.001 * random.nextDouble()));
+         ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.00 * random.nextDouble(), 0.00 * random.nextDouble()));
          double probability = random.nextDouble();
          if (probability < 0.50) {
             row.set(x, -1.0 * row.get(x)); // could replace with ? maybe
