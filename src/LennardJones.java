@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class LennardJones {
+public class LennardJones{
    double epsilon =  4 * 0.0004; // take note of factor of 4, atomic units
    double sigma = 6; // atomic units
    int x = 0; // to make index clearer
@@ -29,7 +29,7 @@ public class LennardJones {
       }
       Random random = new Random();
       for (int i = 0; i < numOfObjects; i++) {
-         ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.00 * random.nextDouble(), 0.00 * random.nextDouble()));
+         ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.00005 * random.nextDouble(), 0.00005 * random.nextDouble()));
          double probability = random.nextDouble();
          if (probability < 0.50) {
             row.set(x, -1.0 * row.get(x)); // could replace with ? maybe
@@ -41,8 +41,8 @@ public class LennardJones {
          velocities.add(row);
       }
       // temp make dynamic later
-      ArrayList<Double> position1 = new ArrayList<>(Arrays.asList(13., 2.));
-      ArrayList<Double> position2 = new ArrayList<>(Arrays.asList(20., 2.));
+      ArrayList<Double> position1 = new ArrayList<>(Arrays.asList(55., 45.));
+      ArrayList<Double> position2 = new ArrayList<>(Arrays.asList(67., 30.));
       positions.add(position1);
       positions.add(position2);
       mainForces = calcForces();

@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -5,6 +6,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+
         LennardJones test = new LennardJones(1000);
 
         ArrayList<Double> energyArray = new ArrayList<>();
@@ -18,8 +20,26 @@ public class Main {
         potentialArray.add(pEnergy);
         kineticArray.add(kEnergy);
 
-        while (test.getCurrentTime() < 200000) {
+        JFrame animFrame = new JFrame();
+        animFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        animFrame.setSize(400, 400);
+
+        AnimationPanel animPanel = new AnimationPanel();
+        animFrame.add(animPanel);
+
+        ArrayList<ArrayList<Double>> currentPositions = test.getPositions();
+        animPanel.updatePanel(currentPositions.get(0).get(0), currentPositions.get(0).get(1),
+                currentPositions.get(1).get(0), currentPositions.get(1).get(1));
+
+        animFrame.setVisible(true);
+
+        while (test.getCurrentTime() < 30000000) {
             test.step();
+
+            currentPositions = test.getPositions();
+            animPanel.updatePanel(currentPositions.get(0).get(0), currentPositions.get(0).get(1),
+                    currentPositions.get(1).get(0), currentPositions.get(1).get(1));
+
             energy = test.getTotalEnergy();
             pEnergy = test.getTotalPotentialEnergy();
             kEnergy = test.getTotalKineticEnergy();
