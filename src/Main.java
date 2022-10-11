@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        LennardJones test = new LennardJones(1000);
+        LennardJones test = new LennardJones(40000);
 
         ArrayList<Double> energyArray = new ArrayList<>();
         ArrayList<Double> potentialArray = new ArrayList<>();
@@ -22,23 +22,20 @@ public class Main {
 
         JFrame animFrame = new JFrame();
         animFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        animFrame.setSize(400, 400);
+        animFrame.setSize(250, 250);
 
-        AnimationPanel animPanel = new AnimationPanel();
+        AnimationPanel animPanel = new AnimationPanel(test.getBoxLength());
         animFrame.add(animPanel);
 
         ArrayList<ArrayList<Double>> currentPositions = test.getPositions();
-        animPanel.updatePanel(currentPositions.get(0).get(0), currentPositions.get(0).get(1),
-                currentPositions.get(1).get(0), currentPositions.get(1).get(1));
-
+        animPanel.updatePanel(currentPositions);
         animFrame.setVisible(true);
 
-        while (test.getCurrentTime() < 30000000) {
+        while (test.getCurrentTime() < test.getTotalTime()) {
             test.step();
 
             currentPositions = test.getPositions();
-            animPanel.updatePanel(currentPositions.get(0).get(0), currentPositions.get(0).get(1),
-                    currentPositions.get(1).get(0), currentPositions.get(1).get(1));
+            animPanel.updatePanel(currentPositions);
 
             energy = test.getTotalEnergy();
             pEnergy = test.getTotalPotentialEnergy();
@@ -47,6 +44,7 @@ public class Main {
             potentialArray.add(pEnergy);
             kineticArray.add(kEnergy);
         }
+        System.out.println("done");
 
         PrintWriter writer = new PrintWriter("lennard.csv");
         ArrayList<String> row = new ArrayList<>();
@@ -58,5 +56,6 @@ public class Main {
             row.clear();
         }
         writer.close();
+        System.out.println("actually done");
         }
     }

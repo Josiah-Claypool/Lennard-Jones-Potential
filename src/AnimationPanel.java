@@ -1,21 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class AnimationPanel extends JPanel {
-
-    Image orangeSquare;
     Image blueSquare;
-    double xPosition;
-    double yPosition;
-    double xPosition2;
-    double yPosition2;
+    ArrayList<ArrayList<Double>> currentPositions;
+    int dimensions;
 
-    AnimationPanel() {
-        this.setPreferredSize(new Dimension(300, 300));
+    AnimationPanel(double boxLength) {
+        dimensions = (int) boxLength;
+        this.setPreferredSize(new Dimension(dimensions, dimensions));
         this.setBackground(Color.white);
-        orangeSquare = new ImageIcon("orsq.png").getImage();
         blueSquare = new ImageIcon("blsq.png").getImage();
-
     }
 
     public void paint(Graphics g) {
@@ -23,16 +19,15 @@ public class AnimationPanel extends JPanel {
 
         Graphics2D g2D = (Graphics2D) g;
 
-        g2D.drawImage(orangeSquare, (int) xPosition, (int) yPosition, null);
-        g2D.drawImage(blueSquare, (int) xPosition2, (int) yPosition2, null);
+        for (ArrayList<Double> currentPosition : currentPositions) {
+            int xPosition = currentPosition.get(0).intValue();
+            int yPosition = currentPosition.get(1).intValue();
+            g2D.drawImage(blueSquare, xPosition, yPosition, null);
+        }
     }
 
-    public void updatePanel(double newXPosition, double newYPosition, double newXPosition2, double newYPosition2) {
-        // parameters to be replaced by arraylist in future
-        xPosition = newXPosition;
-        yPosition = newYPosition;
-        xPosition2 = newXPosition2;
-        yPosition2 = newYPosition2;
+    public void updatePanel(ArrayList<ArrayList<Double>> newPositions) {
+        currentPositions = newPositions;
         repaint();
     }
 }

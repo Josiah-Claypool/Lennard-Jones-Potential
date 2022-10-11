@@ -12,8 +12,8 @@ public class DeepCopy {
     public static ArrayList<ArrayList<Double>> deepCopy2D(ArrayList<ArrayList<Double>> theArray) {
         ArrayList<ArrayList<Double>> fullClone = new ArrayList<>();
         int width = theArray.get(0).size();
-
-        for (int i = 0; i < width; i++) {
+        int length = theArray.size();
+        for (int i = 0; i < length; i++) {
             ArrayList<Double> rowClone = new ArrayList<>();
             for (int j = 0; j < width; j++) {
                 rowClone.add(theArray.get(i).get(j));

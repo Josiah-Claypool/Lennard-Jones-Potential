@@ -7,9 +7,9 @@ public class LennardJones{
    double sigma = 6; // atomic units
    int x = 0; // to make index clearer
    int y = 1; // // to make index clearer
-   int numOfObjects = 2; // for testing will be 2, make dynamic later
+   int numOfObjects = 12; // for testing will be 2, make dynamic later
    double totalTime;
-   double boxLength = 100.0; // for testing will be 5, make dynamic later\
+   double boxLength = 150.0; // for testing will be 5, make dynamic later\
    double dt = 0.5;
    ArrayList<ArrayList<Double>> positions = new ArrayList<>() ; // for testing will be a based of a boxLength of 5, still make
    ArrayList<Double> masses = new ArrayList<>();
@@ -29,7 +29,7 @@ public class LennardJones{
       }
       Random random = new Random();
       for (int i = 0; i < numOfObjects; i++) {
-         ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.00005 * random.nextDouble(), 0.00005 * random.nextDouble()));
+         ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.001 * random.nextDouble(), 0.001 * random.nextDouble()));
          double probability = random.nextDouble();
          if (probability < 0.50) {
             row.set(x, -1.0 * row.get(x)); // could replace with ? maybe
@@ -40,11 +40,16 @@ public class LennardJones{
          }
          velocities.add(row);
       }
-      // temp make dynamic later
-      ArrayList<Double> position1 = new ArrayList<>(Arrays.asList(55., 45.));
-      ArrayList<Double> position2 = new ArrayList<>(Arrays.asList(67., 30.));
-      positions.add(position1);
-      positions.add(position2);
+      for (int i = 0; i < numOfObjects; i++) {
+         if (i < 6) {
+            ArrayList<Double> positionRow = new ArrayList<>(Arrays.asList((i + 1) * 20., 20.));
+            positions.add(positionRow);
+         }
+         else {
+            ArrayList<Double> positionRow = new ArrayList<>(Arrays.asList((i - 5) * 20., 40.));
+            positions.add(positionRow);
+         }
+      }
       mainForces = calcForces();
       totalPotentialEnergy = calcPotential();
       totalKineticEnergy = calcKinetic(velocities);
@@ -65,6 +70,10 @@ public class LennardJones{
 
    public double getTotalPotentialEnergy() { return totalPotentialEnergy; }
    public double getTotalKineticEnergy() { return totalKineticEnergy; }
+
+   public double getBoxLength() { return boxLength; }
+
+   public double getTotalTime() { return totalTime; }
 
    public double potential(double distance) {
       return epsilon * (Math.pow((sigma/distance), 12) - Math.pow((sigma/distance), 6));
