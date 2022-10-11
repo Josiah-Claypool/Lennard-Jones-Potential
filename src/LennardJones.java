@@ -7,9 +7,9 @@ public class LennardJones{
    double sigma = 6; // atomic units
    int x = 0; // to make index clearer
    int y = 1; // // to make index clearer
-   int numOfObjects = 12; // for testing will be 2, make dynamic later
+   int numOfObjects; // for testing will be 2, make dynamic later
    double totalTime;
-   double boxLength = 150.0; // for testing will be 5, make dynamic later\
+   double boxLength; // for testing will be 5, make dynamic later\
    double dt = 0.5;
    ArrayList<ArrayList<Double>> positions = new ArrayList<>() ; // for testing will be a based of a boxLength of 5, still make
    ArrayList<Double> masses = new ArrayList<>();
@@ -21,9 +21,11 @@ public class LennardJones{
    double totalPotentialEnergy;
 
 
-   public LennardJones(int totalTime) {
+   public LennardJones(int totalTime, int numOfObjects, double boxLength) {
       //this.numOfObjects = numOfObjects;
       this.totalTime = totalTime;
+      this.numOfObjects = numOfObjects;
+      this.boxLength = boxLength;
       for (int i = 0; i < numOfObjects; i++) {
          masses.add(73000.0);
       }

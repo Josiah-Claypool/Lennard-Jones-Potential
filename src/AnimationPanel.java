@@ -22,7 +22,9 @@ public class AnimationPanel extends JPanel {
         for (ArrayList<Double> currentPosition : currentPositions) {
             int xPosition = currentPosition.get(0).intValue();
             int yPosition = currentPosition.get(1).intValue();
-            g2D.drawImage(blueSquare, xPosition, yPosition, null);
+            int xAdjPosition = dimensions - xPosition;
+            int yAdjPosition = dimensions - yPosition;
+            g2D.drawImage(blueSquare, xAdjPosition, yAdjPosition, null);
         }
     }
 

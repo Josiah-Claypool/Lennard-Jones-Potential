@@ -7,14 +7,14 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        LennardJones test = new LennardJones(40000);
+        LennardJones verlet = new LennardJones(250000, 12, 150.);
 
         ArrayList<Double> energyArray = new ArrayList<>();
         ArrayList<Double> potentialArray = new ArrayList<>();
         ArrayList<Double> kineticArray = new ArrayList<>();
-        double energy = test.getTotalEnergy();
-        double pEnergy = test.getTotalPotentialEnergy();
-        double kEnergy = test.getTotalKineticEnergy();
+        double energy = verlet.getTotalEnergy();
+        double pEnergy = verlet.getTotalPotentialEnergy();
+        double kEnergy = verlet.getTotalKineticEnergy();
 
         energyArray.add(energy);
         potentialArray.add(pEnergy);
@@ -24,22 +24,22 @@ public class Main {
         animFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         animFrame.setSize(250, 250);
 
-        AnimationPanel animPanel = new AnimationPanel(test.getBoxLength());
+        AnimationPanel animPanel = new AnimationPanel(verlet.getBoxLength());
         animFrame.add(animPanel);
 
-        ArrayList<ArrayList<Double>> currentPositions = test.getPositions();
+        ArrayList<ArrayList<Double>> currentPositions = verlet.getPositions();
         animPanel.updatePanel(currentPositions);
         animFrame.setVisible(true);
 
-        while (test.getCurrentTime() < test.getTotalTime()) {
-            test.step();
+        while (verlet.getCurrentTime() < verlet.getTotalTime()) {
+            verlet.step();
 
-            currentPositions = test.getPositions();
+            currentPositions = verlet.getPositions();
             animPanel.updatePanel(currentPositions);
 
-            energy = test.getTotalEnergy();
-            pEnergy = test.getTotalPotentialEnergy();
-            kEnergy = test.getTotalKineticEnergy();
+            energy = verlet.getTotalEnergy();
+            pEnergy = verlet.getTotalPotentialEnergy();
+            kEnergy = verlet.getTotalKineticEnergy();
             energyArray.add(energy);
             potentialArray.add(pEnergy);
             kineticArray.add(kEnergy);
