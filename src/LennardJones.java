@@ -3,15 +3,15 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class LennardJones{
-   double epsilon =  4 * 0.0004; // take note of factor of 4, atomic units
+   double epsilon =  4 * 0.0004; // atomic units
    double sigma = 6; // atomic units
    int x = 0; // to make index clearer
    int y = 1; // // to make index clearer
-   int numOfObjects; // for testing will be 2, make dynamic later
+   int numOfObjects; // number of molecules
    double totalTime;
-   double boxLength; // for testing will be 5, make dynamic later\
-   double dt = 0.5;
-   ArrayList<ArrayList<Double>> positions = new ArrayList<>() ; // for testing will be a based of a boxLength of 5, still make
+   double boxLength; // the confines of position
+   double dt = 0.5; // time step
+   ArrayList<ArrayList<Double>> positions = new ArrayList<>();
    ArrayList<Double> masses = new ArrayList<>();
    ArrayList<ArrayList<Double>> velocities = new ArrayList<>();
    double currentTime = 0;
@@ -21,14 +21,24 @@ public class LennardJones{
    double totalPotentialEnergy;
 
 
+   /**
+    * Initializes the configuration by setting the number of molecules, the box dimensions, the total time of the run,
+    * the masses of the objects, the random distribution of velocities, the distribution of positions, the initial
+    * forces, initial potential energy, initial kinetic energy, and the initial total energy.
+    *
+    * @param totalTime   The total time desired for the run
+    * @param numOfObjects   The desired amount of molecules (currently tested for up to a dozen)
+    * @param boxLength   The dimensions of the box confines
+    */
    public LennardJones(int totalTime, int numOfObjects, double boxLength) {
       //this.numOfObjects = numOfObjects;
       this.totalTime = totalTime;
       this.numOfObjects = numOfObjects;
       this.boxLength = boxLength;
       for (int i = 0; i < numOfObjects; i++) {
-         masses.add(73000.0);
+         masses.add(73000.0); // atomic units
       }
+      // give random velocities within a range and 50/50 on negative or positive direction
       Random random = new Random();
       for (int i = 0; i < numOfObjects; i++) {
          ArrayList<Double> row = new ArrayList<>(Arrays.asList(0.001 * random.nextDouble(), 0.001 * random.nextDouble()));
@@ -42,6 +52,7 @@ public class LennardJones{
          }
          velocities.add(row);
       }
+      // initial positions
       for (int i = 0; i < numOfObjects; i++) {
          if (i < 6) {
             ArrayList<Double> positionRow = new ArrayList<>(Arrays.asList((i + 1) * 20., 20.));
@@ -56,10 +67,6 @@ public class LennardJones{
       totalPotentialEnergy = calcPotential();
       totalKineticEnergy = calcKinetic(velocities);
       totalEnergy = totalKineticEnergy + totalPotentialEnergy;
-   }
-
-   public ArrayList<ArrayList<Double>> getVelocities() {
-      return velocities;
    }
 
    public ArrayList<ArrayList<Double>> getPositions() {
@@ -77,14 +84,35 @@ public class LennardJones{
 
    public double getTotalTime() { return totalTime; }
 
+
+   /**
+    * Calculates and returns the potential energy of the Lennard-Jones potential according to the distance between
+    * two molecules
+    *
+    * @param distance   The distance between the molecules (r)
+    * @return   The potential energy
+    */
    public double potential(double distance) {
       return epsilon * (Math.pow((sigma/distance), 12) - Math.pow((sigma/distance), 6));
    }
 
+   /**
+    * Calculates and returns the force from the Lennard-Jones potential according to the distance between
+    * two molecules
+    *
+    * @param distance   The distance between the molecules (r)
+    * @return   The force
+    */
    public double force(double distance) {
       return epsilon * 6 / distance * ( 2 * Math.pow((sigma / distance), 12) - Math.pow((sigma / distance), 6));
    }
 
+   /**
+    * Calculates and returns the kinetic energy of the entire system from the motion of all the molecules
+    *
+    * @param velocities   The current velocities of the configuration
+    * @return   The total kinetic energy
+    */
    public double calcKinetic(ArrayList<ArrayList<Double>> velocities) {
       double kineticEnergy = 0;
       for (int i = 0; i < masses.size(); i++) {
@@ -93,11 +121,15 @@ public class LennardJones{
       return kineticEnergy;
    }
 
+   /**
+    * Calculates and returns the potential energy of the entire system from each pair interaction
+    *
+    * @return   The total potential energy
+    */
    public double calcPotential() {
       double potentialEnergy = 0;
       for (int i = 0; i < numOfObjects; i++) {
          for (int j = i + 1; j < numOfObjects; j++) {
-            // replace with distance method later
             double r =  Math.sqrt( Math.pow( (positions.get(i).get(x) - positions.get(j).get(x)), 2 )  +
                     Math.pow( (positions.get(i).get(y) - positions.get(j).get(y)), 2 ));
             potentialEnergy += potential(r);
@@ -106,6 +138,11 @@ public class LennardJones{
       return potentialEnergy;
    }
 
+   /**
+    * Calculates and returns the forces on each molecule according to each pair interaction
+    *
+    * @return  The forces
+    */
    public ArrayList<ArrayList<Double>> calcForces() {
       ArrayList<ArrayList<Double>> forces = new ArrayList<>();
       for (int i = 0; i < numOfObjects; i++) {
@@ -114,12 +151,12 @@ public class LennardJones{
       }
       for (int i = 0; i < numOfObjects; i++) {
          for (int j = i + 1; j < numOfObjects; j++) {
-            double dx = positions.get(j).get(x) - positions.get(i).get(x);
-            double dy = positions.get(j).get(y) - positions.get(i).get(y);
+            double dx = positions.get(j).get(x) - positions.get(i).get(x); // distance in x
+            double dy = positions.get(j).get(y) - positions.get(i).get(y); // distance in y
             double distance = Math.sqrt( Math.pow( (positions.get(i).get(x) - positions.get(j).get(x)), 2 )  +
-                    Math.pow( (positions.get(i).get(y) - positions.get(j).get(y)), 2 ));
-            double fx = force(distance) * dx / distance;
-            double fy = force(distance) * dy / distance;
+                    Math.pow( (positions.get(i).get(y) - positions.get(j).get(y)), 2 )); // radius distance
+            double fx = force(distance) * dx / distance; // x component of forces
+            double fy = force(distance) * dy / distance; // y component of forces
             forces.get(i).set(x, forces.get(i).get(x) - fx);
             forces.get(j).set(x, forces.get(j).get(x) + fx);
             forces.get(i).set(y, forces.get(i).get(y) - fy);
@@ -130,6 +167,12 @@ public class LennardJones{
    }
 
 
+   /**
+    * Updates the positions of every molecule
+    *
+    * @param velocities   The current velocities
+    * @param forces   The current forces
+    */
    public void updatePositions(ArrayList<ArrayList<Double>> velocities, ArrayList<ArrayList<Double>> forces) {
       for (int i = 0; i < numOfObjects; i++) {
          positions.get(i).set(x, positions.get(i).get(x) + velocities.get(i).get(x) * dt + 0.5 *
@@ -139,6 +182,12 @@ public class LennardJones{
       }
    }
 
+   /**
+    * Updates the velocities of every molecule
+    *
+    * @param forces   The current forces
+    * @param nextForces   The forces from one step ahead
+    */
    public void updateVelocities(ArrayList<ArrayList<Double>> forces, ArrayList<ArrayList<Double>> nextForces) {
       for (int i = 0; i < numOfObjects; i++) {
          velocities.get(i).set(x, velocities.get(i).get(x) + 0.5 * (forces.get(i).get(x) + nextForces.get(i).get(x)) / masses.get(i) * dt);
@@ -146,6 +195,14 @@ public class LennardJones{
       }
    }
 
+
+   /**
+    * Takes a step forward in time. Updates the positions according to the current velocities and forces. Checks that
+    * no molecules are outside of bounds and adjust position if so. Updates the forces based off the new positions.
+    * Updates the velocities from the current forces and the new forces. Changes the current forces to be the new forces.
+    * Calculates the potential energy, kinetic energy, and total energy.
+    *
+    */
    public void step() {
       currentTime += dt;
       updatePositions(velocities, mainForces);
