@@ -18,3 +18,24 @@ $$ fx = F(r) \frac{dx}{r}  $$
 
 
 $$ fy = F(r) \frac{dy}{r}  $$
+
+
+**1.** A desired amount of molecules are initialized with positions and a distribution of velocities. The forces on each molecule are calculated from these positions. The kinetic, potential, and total energy of the system is calculated. The energy values are stored throughout for graphing later.
+
+**2.** The molecule positions are visually represented on a JPanel that will be updated for animation. 
+
+**3.** A step forward in time is taken.
+
+**4.** The positions are updated from the forces and velocities.
+
+**5.** Boundary conditions are checked to ensure that molecules stay within the defined box size.
+
+**6.** The forces are updated from the new positions.
+
+**7.** The velocities are updated from the new forces and the last set of forces. 
+
+**8.** The kinetic, potential, and total energy are calculated and stored.
+
+**9.** The JPanel is updated with the new positions.
+
+**10.** Returns to step 3 until the total time is reached.
