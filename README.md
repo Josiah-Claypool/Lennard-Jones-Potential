@@ -1,12 +1,15 @@
 # Lennard-Jones-Potential
 
-$$V_{LJ}(r) = \epsilon \left[ (\frac{\sigma}{r})^{12} - (\frac{\sigma}{r})^{6} \right]$$
+
+$$V_{LJ}(r) = \epsilon \left[ (\frac{\sigma}{r})^{12} - (\frac{\sigma}{r})^{6} \right]$$ 
 
 $$F_{LJ}(r) = \epsilon \frac{6}{r} \left[ 2(\frac{\sigma}{r})^{12} - (\frac{\sigma}{r})^{6} \right]$$
 
-$$ v_{x_{i + 1}} = v_{x_{i}} + \frac{m_{i}}{2}(F_{x_{i}} + F_{x_{i + 1}})\Delta t$$
+$$ v_{{t + \Delta t}} = v_{t} + \frac{m (F_{t} + F_{t + \Delta t})\Delta t}{2}$$
 
-$$ x_{i + 1} = x_{i} +  v_{x_{i}}\Delta t + \frac{F_{x_{i}}}{2m_{i}}\Delta t^{2}$$
+
+
+$$ x_{t + \Delta t} = x_{t} +  v_{t}\Delta t + \frac{F_{t}\Delta t^{2}}{2m}$$
 
 $$ KE = \sum_{i}^{N}\frac{m_{i}}{2}(v_{x_{i}}^{2} + v_{y_{i}}^{2}) $$
 
@@ -20,7 +23,7 @@ $$ fx = F(r) \frac{dx}{r}  $$
 $$ fy = F(r) \frac{dy}{r}  $$
 
 
-**1.** A desired amount of molecules are initialized with positions and a distribution of velocities. The forces on each molecule are calculated from these positions. The kinetic, potential, and total energy of the system is calculated. The energy values are stored throughout for graphing later.
+**1.** A desired amount of molecules are initialized with positions and a distribution of velocities. The forces on each molecule are calculated from these positions. The kinetic, potential, and total energy of the system is calculated and are stored for graphing later.
 
 **2.** The molecule positions are visually represented on a JPanel that will be updated for animation. 
 
@@ -39,3 +42,5 @@ $$ fy = F(r) \frac{dy}{r}  $$
 **9.** The JPanel is updated with the new positions.
 
 **10.** Returns to step 3 until the total time is reached.
+
+The kinetic, potential, and total energy values are exported as to ***lennard.csv*** and can be graphed in python with ***lennard_jones.py***
