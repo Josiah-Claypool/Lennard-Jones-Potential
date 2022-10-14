@@ -45,7 +45,7 @@ This program follows these steps.
 
 **10.** Returns to step 3 until the total time is reached.
 
-The kinetic, potential, and total energy values are exported to ***lennard.csv*** and can be graphed in python with ***lennard_jones.py***
+The kinetic, potential, and total energy values are exported to ***lennard.csv*** and can be graphed in python with ***lennard-jones.py***
 
 For more details see the wikipedia articles on the [Lennard-Jones potential](https://en.wikipedia.org/wiki/Lennard-Jones_potential), and the [velocity Verlet algorithm](https://en.wikipedia.org/wiki/Verlet_integration#Velocity_Verlet).
 
