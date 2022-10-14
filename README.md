@@ -1,37 +1,39 @@
 # Lennard-Jones-Potential
 
+The Lennard-Jones potential describes the behavior of neutral intermolecular movements. At close distances the particles have a severe repulsive force. When nearby they experience an attractive force. The potential is:
 
-$$V_{LJ}(r) = \epsilon \left[ (\frac{\sigma}{r})^{12} - (\frac{\sigma}{r})^{6} \right]$$ 
+$$V_{LJ}(r) = 4\epsilon \left[ (\frac{\sigma}{r})^{12} - (\frac{\sigma}{r})^{6} \right]$$ 
 
-$$F_{LJ}(r) = \epsilon \frac{6}{r} \left[ 2(\frac{\sigma}{r})^{12} - (\frac{\sigma}{r})^{6} \right]$$
+$r$ is the distance between the particles and $\epsilon$ is the potential well depth. At distance $\sigma$ the potential is 0.
 
-$$ v_{{t + \Delta t}} = v_{t} + \frac{m (F_{t} + F_{t + \Delta t})\Delta t}{2}$$
+The force is:
 
+$$F_{LJ}(r) = \epsilon \frac{24}{r} \left[ 2(\frac{\sigma}{r})^{12} - (\frac{\sigma}{r})^{6} \right]$$
 
+This program uses the velocity verlet algorithm to update the positions and velocities:
+
+$$v_{{t + \Delta t}} = v_{t} + \frac{m (F_{t} + F_{t + \Delta t})\Delta t}{2}$$
 
 $$ x_{t + \Delta t} = x_{t} +  v_{t}\Delta t + \frac{F_{t}\Delta t^{2}}{2m}$$
 
-$$ KE = \sum_{i}^{N}\frac{m_{i}}{2}(v_{x_{i}}^{2} + v_{y_{i}}^{2}) $$
 
-$$ dx = x_{j} - x_{i}  $$
-
-$$ dy = y_{j} - y_{i}  $$
+The components of the force are calculated by:
 
 $$ fx = F(r) \frac{dx}{r}  $$
 
+Where dx is the distance between the particles in the x dimension . 
 
-$$ fy = F(r) \frac{dy}{r}  $$
+This program follows these steps.
 
+**1.** A desired amount of particles are initialized with positions and velocities from a distribution. The forces on each particle are calculated from these positions. The kinetic, potential, and total energy of the system are calculated and stored for graphing later. These particles are confined to a box of user set length.
 
-**1.** A desired amount of molecules are initialized with positions and a distribution of velocities. The forces on each molecule are calculated from these positions. The kinetic, potential, and total energy of the system is calculated and are stored for graphing later.
-
-**2.** The molecule positions are visually represented on a JPanel that will be updated for animation. 
+**2.** The particle positions are visually represented on a JPanel that will be updated for animation. 
 
 **3.** A step forward in time is taken.
 
 **4.** The positions are updated from the forces and velocities.
 
-**5.** Boundary conditions are checked to ensure that molecules stay within the defined box size.
+**5.** Boundary conditions are checked to ensure that particles stay within the defined box size.
 
 **6.** The forces are updated from the new positions.
 
@@ -49,7 +51,7 @@ The kinetic, potential, and total energy values are exported as to ***lennard.cs
 
 [Here is a video that has two different runs next to each other.](https://www.youtube.com/watch?v=CZ2V0Xi6pXI)
 
-Below are the energies of two different runs with 12 molecules with initial velocities.
+Below are the energies of two different runs with 12 particles with initial velocities.
 
 ![](https://i.imgur.com/WYOfafv.png)
 
