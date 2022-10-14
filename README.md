@@ -10,7 +10,7 @@ The force is:
 
 $$F_{LJ}(r) = \epsilon \frac{24}{r} \left[ 2(\frac{\sigma}{r})^{12} - (\frac{\sigma}{r})^{6} \right]$$
 
-This program uses the velocity verlet algorithm to update the positions and velocities:
+This program uses the velocity Verlet algorithm to update the positions and velocities:
 
 $$v_{{t + \Delta t}} = v_{t} + \frac{m (F_{t} + F_{t + \Delta t})\Delta t}{2}$$
 
@@ -21,7 +21,7 @@ The components of the force are calculated by:
 
 $$ fx = F(r) \frac{dx}{r}  $$
 
-Where dx is the distance between the particles in the x dimension . 
+Where $dx$ is the distance between the particles in the x dimension . 
 
 This program follows these steps.
 
@@ -45,7 +45,9 @@ This program follows these steps.
 
 **10.** Returns to step 3 until the total time is reached.
 
-The kinetic, potential, and total energy values are exported as to ***lennard.csv*** and can be graphed in python with ***lennard_jones.py***
+The kinetic, potential, and total energy values are exported to ***lennard.csv*** and can be graphed in python with ***lennard_jones.py***
+
+For more details see the wikipedia articles on the [Lennard-Jones potential](https://en.wikipedia.org/wiki/Lennard-Jones_potential), and the [velocity Verlet algorithm](https://en.wikipedia.org/wiki/Verlet_integration#Velocity_Verlet).
 
 -------
 
