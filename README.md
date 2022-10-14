@@ -44,3 +44,13 @@ $$ fy = F(r) \frac{dy}{r}  $$
 **10.** Returns to step 3 until the total time is reached.
 
 The kinetic, potential, and total energy values are exported as to ***lennard.csv*** and can be graphed in python with ***lennard_jones.py***
+
+-------
+
+[Here is a video that has two different runs next to each other.](https://www.youtube.com/watch?v=CZ2V0Xi6pXI)
+
+Below are the energies of two different runs with 12 molecules with initial velocities.
+
+![](https://i.imgur.com/WYOfafv.png)
+
+![](https://i.imgur.com/UhjjT7E.png)
