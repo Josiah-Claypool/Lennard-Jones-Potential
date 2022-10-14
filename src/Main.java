@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        LennardJones verlet = new LennardJones(1250000, 12, 150.);
+        LennardJones verlet = new LennardJones(100000, 12, 150.);
 
         ArrayList<Double> energyArray = new ArrayList<>();
         ArrayList<Double> potentialArray = new ArrayList<>();
@@ -22,7 +22,7 @@ public class Main {
 
         JFrame animFrame = new JFrame();
         animFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        animFrame.setSize(250, 250); // slightly larger than panel
+        animFrame.setSize(400, 400); // slightly larger than panel
 
         AnimationPanel animPanel = new AnimationPanel(verlet.getBoxLength());
         animFrame.add(animPanel);

@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class LennardJones{
-   double epsilon =  4 * 0.0004; // atomic units
+   double epsilon =  0.0004; // atomic units
    double sigma = 6; // atomic units
    int x = 0; // to make index clearer
    int y = 1; // // to make index clearer
@@ -93,7 +93,7 @@ public class LennardJones{
     * @return   The potential energy
     */
    public double potential(double distance) {
-      return epsilon * (Math.pow((sigma/distance), 12) - Math.pow((sigma/distance), 6));
+      return 4 * epsilon * (Math.pow((sigma/distance), 12) - Math.pow((sigma/distance), 6));
    }
 
    /**
@@ -104,7 +104,7 @@ public class LennardJones{
     * @return   The force
     */
    public double force(double distance) {
-      return epsilon * 6 / distance * ( 2 * Math.pow((sigma / distance), 12) - Math.pow((sigma / distance), 6));
+      return 4 * epsilon * 6 / distance * ( 2 * Math.pow((sigma / distance), 12) - Math.pow((sigma / distance), 6));
    }
 
    /**
